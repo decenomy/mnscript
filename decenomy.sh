@@ -2125,7 +2125,7 @@ function wallet_install_check() {
 function upgrade_script() {
   cp decenomy decenomy_old
   rm -rf decenomy
-  wget -q $SCRIPT_GITHUB
+  wget -q $SCRIPT_FILE
   mv decenomy.sh decenomy
   chmod +x decenomy
   exec "$0" "$@"
