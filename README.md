@@ -20,7 +20,7 @@ The script was designed to be installed on pre-purchased Virtual Private Servers
 
 **To install and run the script for the first time**, copy and paste the full command below into a terminal prompt :
 
-**`wget -q https://github.com/decenomy/mnscript && bash decenomy.sh`**
+**`wget -q https://raw.githubusercontent.com/decenomy/mnscript/main/decenomy.sh && bash decenomy.sh`**
 
 
 After the first run, the script will convert the file " *decenomy.sh* " into an executable file named decenomy. Therefore, the user can simply type the **following command at the terminal prompt to run the script the next time:**
