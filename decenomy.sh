@@ -20,7 +20,8 @@ ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
 SCRIPVERSION=v1.0.0
-SCRIPT_GITHUB=https://github.com/decenomy/mnscript/releases/latest
+SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
+SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
 if [[ -z "$NODEIP" ]]; then
   #if we get here, then most likely icanhazip.com is timing out
@@ -1686,7 +1687,7 @@ update_script() {
     while true; do
       case $opt in
         1) clear
-           upgrade_scrip
+           upgrade_script
         ;;
         0) clear
            main_menu
