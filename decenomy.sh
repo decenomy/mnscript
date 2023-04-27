@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.0
+SCRIPVERSION=v1.0.1
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -2045,10 +2045,11 @@ function prepare_system() {
 
   if [ "$?" -gt "0" ]; then
     echo -e " ${RED}Not all required packages were installed properly. Try to install them manually by running the following commands:${NC}\n"
+    echo
     echo " apt-get update"
-    echo " apt -y install software-properties-common"
+    echo " apt-get install -y software-properties-common"
     echo " apt-get update"
-    echo " apt install -y make software-properties-common build-essential libtool autoconf libssl-dev sudo automake git wget curl bsdmainutils net-tools libminiupnpc-dev libgmp3-dev ufw pkg-config unzip"
+    echo " apt-get install -y make software-properties-common build-essential libtool autoconf libssl-dev sudo automake git wget curl bsdmainutils net-tools libminiupnpc-dev libgmp3-dev ufw pkg-config unzip"
     exit 1
   fi
   clear
