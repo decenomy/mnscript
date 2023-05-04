@@ -2127,7 +2127,7 @@ function wallet_install_check() {
 # Process for Prompting Information About a New Version of the Script.
 function version_script_check() {
   LATEST_VERSION=$(curl -s $SCRIPT_GITHUB | grep -oP '(?<="tag_name": ")[^"]+')
-  if [ "$SCRIPTVERSION" != "$LATEST_VERSION" ]; then
+  if [ "$SCRIPVERSION" != "$LATEST_VERSION" ]; then
     echo -e "${RED}New script version available:${NC} $LATEST_VERSION"
   fi
 }
