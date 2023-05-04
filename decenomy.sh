@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.1
+SCRIPVERSION=v1.0.2
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -2065,7 +2065,7 @@ function update_wallet_process() {
   sleep 2
   mkdir -p $CONFIGFOLDER/wallet_update && cd $CONFIGFOLDER/wallet_update  >/dev/null 2>&1
   wget -q $COIN_TGZ
-  unzip -q $COIN_ZIP
+  7z x -bso0 -bse0 $COIN_ZIP
   echo -e " Stopping all current services related to ${GREEN}$COIN_NAME${NC}"
   echo
   systemctl stop $COIN_NAME.service > /dev/null 2>&1
