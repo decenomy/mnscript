@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.2
+SCRIPVERSION=v1.0.3
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -31,6 +31,8 @@ fi
 
 # Header for menu screen.
 header() {
+  version_script_check
+  echo
   echo -e "${BLUE}${BOLD}
   \t\t    ██████╗ ███╗   ███╗██╗   ██╗
   \t\t    ██╔══██╗████╗ ████║╚██╗ ██╔╝
@@ -2120,6 +2122,14 @@ function wallet_install_check() {
   echo -e $ASCII_LINE
   read -p ""
   clear
+}
+
+# Process for Prompting Information About a New Version of the Script.
+function version_script_check() {
+  LATEST_VERSION=$(curl -s $SCRIPT_GITHUB | grep -oP '(?<="tag_name": ")[^"]+')
+  if [ "$SCRIPTVERSION" != "$LATEST_VERSION" ]; then
+    echo -e "${RED}New script version available:${NC} $LATEST_VERSION"
+  fi
 }
 
 # Process to upgrade script version.
