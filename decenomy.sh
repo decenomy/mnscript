@@ -6,7 +6,7 @@
 # All rights reserved 
 # MIT License
 
-# Term colors...
+# Term colors.
 BLUE="\033[0;34m"
 YELLOW="\033[0;33m"
 CYAN="\033[0;36m"
@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.3
+SCRIPVERSION=v1.0.4
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -31,7 +31,6 @@ fi
 
 # Header for menu screen.
 header() {
-  version_script_check
   echo
   echo -e "${BLUE}${BOLD}
   \t\t    ██████╗ ███╗   ███╗██╗   ██╗
@@ -69,7 +68,33 @@ allign() {
   printf "%s\n" "$ASCII_LINE"
 }
 
-# Coin variable.
+# Variable.
+var_overview() {
+  TICKER1=""
+  COIN_NAME1=""
+  COIN_CLI1=""
+
+  case "$dir" in
+    */.azzure) TICKER1="AZR"; COIN_NAME1="azzure"; COIN_CLI1="azzure-cli" ;;
+    */.beacon) TICKER1="BECN"; COIN_NAME1="beacon"; COIN_CLI1="beacon-cli" ;;
+    */.birake) TICKER1="BIR"; COIN_NAME1="birake"; COIN_CLI1="birake-cli" ;;
+    */.cryptoflow) TICKER1="CFL"; COIN_NAME1="cryptoflow"; COIN_CLI1="cryptoflow-cli" ;;
+    */.cryptosaga) TICKER1="SAGA"; COIN_NAME1="cryptosaga"; COIN_CLI1="cryptosaga-cli" ;;
+    */.dashdiamond) TICKER1="DASHD"; COIN_NAME1="dashdiamond"; COIN_CLI1="dashdiamond-cli" ;;
+    */.eskacoin) TICKER1="ESK"; COIN_NAME1="eskacoin"; COIN_CLI1="eskacoin-cli" ;;
+    */.flits) TICKER1="FLS"; COIN_NAME1="flits"; COIN_CLI1="flits-cli" ;;
+    */.jackpot) TICKER1="777"; COIN_NAME1="jackpot"; COIN_CLI1="jackpot-cli" ;;
+    */.kyanite) TICKER1="KYAN"; COIN_NAME1="kyanite"; COIN_CLI1="kyanite-cli" ;;
+    */.mobic) TICKER1="MOBIC"; COIN_NAME1="mobic"; COIN_CLI1="mobic-cli" ;;
+    */.monk) TICKER1="MONK"; COIN_NAME1="monk"; COIN_CLI1="monk-cli" ;;
+    */.oneworld) TICKER1="OWO"; COIN_NAME1="oneworld"; COIN_CLI1="oneworld-cli" ;;
+    */.peony) TICKER1="PNY"; COIN_NAME1="peony"; COIN_CLI1="peony-cli" ;;
+    */.sapphire) TICKER1="SAPP"; COIN_NAME1="sapphire"; COIN_CLI1="sapphire-cli" ;;
+    */.suvereno) TICKER1="SUV"; COIN_NAME1="suvereno"; COIN_CLI1="suvereno-cli" ;;
+    */.ultraclear) TICKER1="UCR"; COIN_NAME1="ultraclear"; COIN_CLI1="ultraclear-cli" ;;
+  esac
+}
+
 var_azr() {
   TMP_FOLDER=$(mktemp -d)
   CONFIG_FILE='azzure.conf'
@@ -413,7 +438,7 @@ main_menu() {
   echo -e " "[--] Ultra Clear - UCR"      |-|-|   "
   echo
   echo -e $ASCII_LINE
-  echo -e " "[18] ${YELLOW}Update this script${NC}"     |-|-|   "[19] ${YELLOW}Already installed${NC}
+  echo -e " "[18] ${YELLOW}Update this script${NC}"     |-|-|   "[19] ${YELLOW}Overview Center${NC}
   echo -e $ASCII_LINE
   echo -e "\t\t\t   [0]  Exit"
   echo -e $ASCII_LINE
@@ -477,7 +502,7 @@ main_menu() {
           update_script
       ;;
       19) clear
-          wallet_install_check
+          overview_center
           main_menu
       ;;
       0) clear
@@ -1044,7 +1069,7 @@ apply_bootstrap() {
     case $opt in
       1) clear
          bootstrap
-         reload_service
+         peer_banlist_delete
          wallet_management
       ;;
       0) clear
@@ -1439,22 +1464,22 @@ wallet_info() {
   echo -e "\t\t\t${YELLOW}|- Wallet statistics${NC}\n"
   allign  "$COIN_NAME" " " " Wallet Statistics "
   echo
-  echo -e " "Wallet version on Github"  : "${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
+  echo -e " Wallet version on Github: "${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
   echo
-  echo -e " "Wallet version installed"  : "${YELLOW}$($COIN_CLI -version | awk '{print $5}' | awk -F '-' '{print $1}')${NC}
+  echo -e " Wallet version installed: "${YELLOW}$($COIN_CLI -version | awk '{print $5}' | awk -F '-' '{print $1}')${NC}
   echo
-  echo -e " "Protocol version : ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==2'; exit")${NC}
+  echo -e " Protocol version: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==2'; exit")${NC}
   echo
-  echo -e " "Number of connections :  ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getconnectioncount; exit")${NC} "( In : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  true; exit") / Out : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  false; exit") )"
+  echo -e " Number of connections:  "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getconnectioncount; exit")${NC} "( In : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  true; exit") / Out : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  false; exit") )"
   echo
-  echo -e " "Wallet Sync? : ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}
+  echo -e " Wallet sync:    "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}
   echo 
-  echo -e " "Wallet block : ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==7'; exit")${NC}
+  echo -e " Wallet block:   "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==7'; exit")${NC}
   echo
-  echo -e " "Block hash verification:
+  echo -e " Block hash verification:"
   echo
-  echo -e " "Explorer block"\t "${YELLOW}$EXPLORER_BLOCK${NC} hash"  :  "${YELLOW}$EXPLORER_HASH${NC}
-  echo -e " "Wallet block"\t "${YELLOW}$EXPLORER_BLOCK${NC} hash"  :  "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK; exit")${NC}
+  echo -e " Explorer block: "${YELLOW}$EXPLORER_BLOCK${NC} hash:  ${YELLOW}${EXPLORER_HASH:0:12} ... ${EXPLORER_HASH: -12}${NC}
+  echo -e " Wallet   block: "${YELLOW}$EXPLORER_BLOCK${NC} hash:  ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK; exit" | cut -c 1-12) ... $(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK; exit" | rev | cut -c 1-12 | rev)${NC}
   echo
   echo
   echo
@@ -2089,8 +2114,8 @@ function update_wallet_process() {
   sleep 2
 }
 
-# Process to search for already installed coin wallets.
-function wallet_install_check() {
+# Process to deliver overview information from the system.
+function overview_center() {
   echo
   echo " Searching for wallets installed..."
   echo
@@ -2099,36 +2124,152 @@ function wallet_install_check() {
   header
   echo
   echo -e $ASCII_LINE
-  echo -e "      $ASCII_L   Installed wallets on this system   $ASCII_R"
+  echo -e "\t       $ASCII_L   Overview Center  $ASCII_R"
   echo -e $ASCII_LINE
   echo
+  echo -e " System resources overview "
   echo
+  echo -e " ${GREEN}System Up Time${NC} $(top -n 1 -b | awk '/^top/{print $5}') days | ${GREEN}Cpu Load${NC} $(top -n 1 -b | grep '%Cpu' | awk '{print $2}')%  "
+  total_mem=$(free -h | awk '/^Mem:/{print $2}')
+  used_mem=$(free -h | awk '/^Mem:/{print $3}')
+  free_mem=$(free -h | awk '/^Mem:/{print $4}')
+  cache_mem=$(free -h | awk '/^Mem:/{print $6}')
+  percentage_used=$(awk -v used="$used_mem" -v total="$total_mem" 'BEGIN { printf "%.1f", (used/total) * 100 }')
+  echo -e " ${GREEN}Total disk space${NC}  $(df -h -t ext4 --total | awk '/total/ {print $2 " (" $5 " in use)"}')"
+  echo -e " ${GREEN}Total RAM memory${NC} $total_mem (${percentage_used}% in use) - ${GREEN}Cache Mem${NC} $cache_mem"
+  echo
+  echo -e " Wallet intalled overview"  
   echo
   for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d)
   do
     if [ -e "$dir/activemasternode.conf" ]; then
-      echo -n $(basename $dir | cut -c 2-)
-      echo -e " -> ${GREEN}Multinode installation${NC}"
-      echo
-    else
-      echo -n $(basename $dir | cut -c 2-)
-      echo -e " -> ${YELLOW}Normal masternode installation${NC}"
+          var_overview
+      EXPLORER1=https://explorer.decenomy.net/api/v2/$TICKER1/status
+      EXPLORER_BLOCK1=$(curl -s $EXPLORER1 | jq -r '.response.daemon_bestblockheight')
+      EXPLORER_HASH1=$(curl -s $EXPLORER1 | jq -r '.response.daemon_bestblockhash')
+      echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
+      echo -e " Masternodes:   ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getactivemasternodecount | jq -r '\"total \(.total) | not_capable \(.not_capable) | started \(.started)\"'; exit" | tr -d '"')${NC}"  
+      echo -e " Wallet Sync:   ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}""  "" Connections: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
+      echo -e " Explorer block\t${YELLOW}$EXPLORER_BLOCK1${NC} hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}"
+      echo -e " Wallet   block\t${YELLOW}$EXPLORER_BLOCK1${NC} hash: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1; exit" | cut -c 1-12) ... $(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1; exit" | rev | cut -c 1-12 | rev)${NC}"      
       echo
     fi
   done
   echo
+  echo -e " "[1] Reload information
+  echo -e " "[2] Clean system cache memory
+  echo -e " "[3] Wallets and script update overview
+  echo
   echo -e $ASCII_LINE
-  echo -e "\t\t     Press enter to continue"
+  echo -e "\t\t  [0]  Go back to previous menu"
   echo -e $ASCII_LINE
-  read -p ""
+  echo
+  read -p " Enter the number option: " opt
+
+  while true; do
+    case $opt in
+      1) clear
+         overview_center
+      ;;
+      2) clear
+         sync; echo 1 > /proc/sys/vm/drop_caches
+         overview_center
+      ;;
+      3) clear
+         header
+         echo
+         echo -e $ASCII_LINE
+         echo -e "     $ASCII_L   Wallets and script update overview   $ASCII_R"
+         echo -e $ASCII_LINE
+         echo
+         version_wallet_check
+         version_script_check
+         echo
+         echo -e $ASCII_LINE
+         echo -e "\t\t     Press enter to go back"
+         echo -e $ASCII_LINE
+         read -rsn1 key
+         if [[ $key == "" ]]; then
+         clear
+         overview_center
+         else
+         while true; do
+         echo -e "Invalid option. Press enter to go back."
+         read -rsn1 -t 3 key
+         if [[ $key == "" ]]; then
+         clear
+         overview_center
+         break
+         fi
+         done
+         fi
+      ;;
+      0) clear
+         main_menu
+      ;;
+      *) clear
+         echo -e "Please choose one of the options available "
+         echo
+         overview_center
+      ;;
+    esac
+    read opt
+  done
   clear
 }
 
 # Process for Prompting Information About a New Version of the Script.
 function version_script_check() {
   LATEST_VERSION=$(curl -s $SCRIPT_GITHUB | grep -oP '(?<="tag_name": ")[^"]+')
+    if [ -z "$LATEST_VERSION" ]; then
+    echo -e " --- "
+    echo
+    echo -e " - Unable to retrieve the latest ${GREEN}script version${NC} available on GitHub."
+    echo -e "   There have been too many requests made from this machine. "
+    echo -e "   Please allow some time before trying again."
+    else
   if [ "$SCRIPVERSION" != "$LATEST_VERSION" ]; then
-    echo -e "${RED}New script version available:${NC} $LATEST_VERSION"
+    echo -e " --- "
+    echo
+    echo -e "${GREEN} - New script version available:${NC} $LATEST_VERSION"
+    else
+    echo -e " --- "
+    echo
+    echo -e " - Multinode script is on the latest version available."
+  fi
+  fi
+}
+
+# Process for Prompting Information About a New Version of the installed wallets.
+function version_wallet_check() {
+    local null=false
+    local newversion=false
+    for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d)
+    do
+        if [ -e "$dir/activemasternode.conf" ]; then
+            var_overview
+            GITHUB1="https://api.github.com/repos/decenomy/$TICKER1/releases/latest"
+            LATEST_WALLET=$(curl -s "$GITHUB1" | jq -r '.tag_name')
+            if [ "$LATEST_WALLET" == "null" ]; then
+                null=true
+            else
+                CURRENT_WALLET=$(su - "$COIN_NAME1" -c "$COIN_CLI1 -version; exit" | awk '/version/{print $NF}' | awk -F '-' '{print $1}')
+                if [ "$CURRENT_WALLET" != "$LATEST_WALLET" ]; then
+                    echo -e "${GREEN} - New $COIN_NAME1 wallet version available:${NC} $LATEST_WALLET"
+                    echo
+                    newversion=true
+                fi
+            fi
+        fi
+    done
+    if [ "$null" = true ]; then    
+        echo -e " - Unable to retrieve the latest ${GREEN}wallet version${NC} available on GitHub."
+        echo -e "   There have been too many requests made from this machine."
+        echo -e "   Please allow some time before trying again."
+        echo
+    elif [ "$newversion" = false ]; then
+        echo -e " - All wallets installed are on the latest version available."
+        echo
   fi
 }
 
