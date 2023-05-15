@@ -6,7 +6,7 @@
 # All rights reserved 
 # MIT License
 
-# Term colors.
+# Term colors...
 BLUE="\033[0;34m"
 YELLOW="\033[0;33m"
 CYAN="\033[0;36m"
