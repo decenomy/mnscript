@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.4
+SCRIPVERSION=v1.0.5
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -432,7 +432,7 @@ main_menu() {
   echo -e " "[-] Cryptosaga - SAGA"       |-|-|   "[6] Dash Diamond - DASHD
   echo -e " "[-] Eskacoin - ESK"          |-|-|   "[8] Flits - FLS
   echo -e " "[9] Jackpot - 777"           |-|-|   "[10] Kyanite - KYAN
-  echo -e " "[11] Mobility Coin - MOBIC"  |-|-|   "[--] Monk - MONK
+  echo -e " "[11] Mobility Coin - MOBIC"  |-|-|   "[12] Monk - MONK
   echo -e " "[--] One World - OWO"        |-|-|   "[14] Peony - PNY
   echo -e " "[15] Sapphire - SAPP"        |-|-|   "[--] Suvereno - SUV
   echo -e " "[--] Ultra Clear - UCR"      |-|-|   "
@@ -480,9 +480,9 @@ main_menu() {
       11) clear
           var_mobic
       ;;
-      #12) clear
-      #    var_monk
-      # ;;
+      12) clear
+          var_monk
+      ;;
       #13) clear
       #    var_owo
       # ;;
