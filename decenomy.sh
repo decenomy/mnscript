@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.5
+SCRIPVERSION=v1.0.6
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -31,6 +31,7 @@ fi
 
 # Header for menu screen.
 header() {
+  sed -e "s|\${GREEN}|$GREEN|g" -e "s|\${NC}|$NC|g" update_report.txt | while read -r line; do echo -e "$line"; done
   echo
   echo -e "${BLUE}${BOLD}
   \t\t    ██████╗ ███╗   ███╗██╗   ██╗
@@ -75,23 +76,23 @@ var_overview() {
   COIN_CLI1=""
 
   case "$dir" in
-    */.azzure) TICKER1="AZR"; COIN_NAME1="azzure"; COIN_CLI1="azzure-cli" ;;
-    */.beacon) TICKER1="BECN"; COIN_NAME1="beacon"; COIN_CLI1="beacon-cli" ;;
-    */.birake) TICKER1="BIR"; COIN_NAME1="birake"; COIN_CLI1="birake-cli" ;;
-    */.cryptoflow) TICKER1="CFL"; COIN_NAME1="cryptoflow"; COIN_CLI1="cryptoflow-cli" ;;
-    */.cryptosaga) TICKER1="SAGA"; COIN_NAME1="cryptosaga"; COIN_CLI1="cryptosaga-cli" ;;
-    */.dashdiamond) TICKER1="DASHD"; COIN_NAME1="dashdiamond"; COIN_CLI1="dashdiamond-cli" ;;
-    */.eskacoin) TICKER1="ESK"; COIN_NAME1="eskacoin"; COIN_CLI1="eskacoin-cli" ;;
-    */.flits) TICKER1="FLS"; COIN_NAME1="flits"; COIN_CLI1="flits-cli" ;;
-    */.jackpot) TICKER1="777"; COIN_NAME1="jackpot"; COIN_CLI1="jackpot-cli" ;;
-    */.kyanite) TICKER1="KYAN"; COIN_NAME1="kyanite"; COIN_CLI1="kyanite-cli" ;;
-    */.mobic) TICKER1="MOBIC"; COIN_NAME1="mobic"; COIN_CLI1="mobic-cli" ;;
-    */.monk) TICKER1="MONK"; COIN_NAME1="monk"; COIN_CLI1="monk-cli" ;;
-    */.oneworld) TICKER1="OWO"; COIN_NAME1="oneworld"; COIN_CLI1="oneworld-cli" ;;
-    */.peony) TICKER1="PNY"; COIN_NAME1="peony"; COIN_CLI1="peony-cli" ;;
-    */.sapphire) TICKER1="SAPP"; COIN_NAME1="sapphire"; COIN_CLI1="sapphire-cli" ;;
-    */.suvereno) TICKER1="SUV"; COIN_NAME1="suvereno"; COIN_CLI1="suvereno-cli" ;;
-    */.ultraclear) TICKER1="UCR"; COIN_NAME1="ultraclear"; COIN_CLI1="ultraclear-cli" ;;
+    */.azzure) TICKER1="AZR"; COIN_NAME1="azzure"; COIN_CLI1="azzure-cli"; COIN_DAEMON1="azzured" ;;
+    */.beacon) TICKER1="BECN"; COIN_NAME1="beacon"; COIN_CLI1="beacon-cli"; COIN_DAEMON1="beacond"  ;;
+    */.birake) TICKER1="BIR"; COIN_NAME1="birake"; COIN_CLI1="birake-cli"; COIN_DAEMON1="biraked"  ;;
+    */.cryptoflow) TICKER1="CFL"; COIN_NAME1="cryptoflow"; COIN_CLI1="cryptoflow-cli"; COIN_DAEMON1="cryptoflowd"  ;;
+    */.cryptosaga) TICKER1="SAGA"; COIN_NAME1="cryptosaga"; COIN_CLI1="cryptosaga-cli"; COIN_DAEMON1="cryptosagad"  ;;
+    */.dashdiamond) TICKER1="DASHD"; COIN_NAME1="dashdiamond"; COIN_CLI1="dashdiamond-cli"; COIN_DAEMON1="dashdiamondd"  ;;
+    */.eskacoin) TICKER1="ESK"; COIN_NAME1="eskacoin"; COIN_CLI1="eskacoin-cli"; COIN_DAEMON1="eskacoind"  ;;
+    */.flits) TICKER1="FLS"; COIN_NAME1="flits"; COIN_CLI1="flits-cli"; COIN_DAEMON1="flitsd"  ;;
+    */.jackpot) TICKER1="777"; COIN_NAME1="jackpot"; COIN_CLI1="jackpot-cli"; COIN_DAEMON1="jackpotd"  ;;
+    */.kyanite) TICKER1="KYAN"; COIN_NAME1="kyanite"; COIN_CLI1="kyanite-cli"; COIN_DAEMON1="kyanited"  ;;
+    */.mobic) TICKER1="MOBIC"; COIN_NAME1="mobic"; COIN_CLI1="mobic-cli"; COIN_DAEMON1="mobicd"  ;;
+    */.monk) TICKER1="MONK"; COIN_NAME1="monk"; COIN_CLI1="monk-cli"; COIN_DAEMON1="monkd"  ;;
+    */.oneworld) TICKER1="OWO"; COIN_NAME1="oneworld"; COIN_CLI1="oneworld-cli"; COIN_DAEMON1="oneworldd"  ;;
+    */.peony) TICKER1="PNY"; COIN_NAME1="peony"; COIN_CLI1="peony-cli"; COIN_DAEMON1="peonyd"  ;;
+    */.sapphire) TICKER1="SAPP"; COIN_NAME1="sapphire"; COIN_CLI1="sapphire-cli"; COIN_DAEMON1="sapphired"  ;;
+    */.suvereno) TICKER1="SUV"; COIN_NAME1="suvereno"; COIN_CLI1="suvereno-cli"; COIN_DAEMON1="suverenod"  ;;
+    */.ultraclear) TICKER1="UCR"; COIN_NAME1="ultraclear"; COIN_CLI1="ultraclear-cli"; COIN_DAEMON1="ultracleard"  ;;
   esac
 }
 
@@ -105,7 +106,7 @@ var_azr() {
   COIN_NAME='azzure'
   TICKER='AZR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14725
@@ -124,7 +125,7 @@ var_becn() {
   COIN_NAME='beacon'
   TICKER='BECN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status	
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36552
@@ -143,7 +144,7 @@ var_bir() {
   COIN_NAME='birake'
   TICKER='BIR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status	
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=39697
@@ -162,7 +163,7 @@ var_cfl() {
   COIN_NAME='cryptoflow'
   TICKER='CFL'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=13333
@@ -181,7 +182,7 @@ var_saga() {
   COIN_NAME='cryptosaga'
   TICKER='SAGA'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_NAME='cryptosaga'
@@ -201,7 +202,7 @@ var_dashd() {
   COIN_NAME='dashdiamond'
   TICKER='DASHD'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=12341
@@ -220,7 +221,7 @@ var_esk() {
   COIN_NAME='eskacoin'
   TICKER='ESK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14215
@@ -239,7 +240,7 @@ var_fls() {
   COIN_NAME='flits'
   TICKER='FLS'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status	
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32972
@@ -258,7 +259,7 @@ var_777() {
   COIN_NAME='jackpot'
   TICKER='777'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=17771
@@ -277,7 +278,7 @@ var_kyan() {
   COIN_NAME='kyanite'
   TICKER='KYAN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=7757
@@ -296,7 +297,7 @@ var_mobic() {
   COIN_NAME='mobic'
   TICKER='MOBIC'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=22487
@@ -315,7 +316,7 @@ var_monk() {
   COIN_NAME='monk'
   TICKER='MONK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32270
@@ -334,7 +335,7 @@ var_owo() {
   COIN_NAME='oneworld'
   TICKER='OWO'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32112
@@ -353,7 +354,7 @@ var_pny() {
   COIN_NAME='peony'
   TICKER='PNY'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36779
@@ -372,7 +373,7 @@ var_sapp() {
   COIN_NAME='sapphire'
   TICKER='SAPP'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=45328
@@ -391,7 +392,7 @@ var_suv() {
   COIN_NAME='suvereno'
   TICKER='SUV'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=18976
@@ -410,7 +411,7 @@ var_ucr() {
   COIN_NAME='ultraclear'
   TICKER='UCR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/status
+  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32628
@@ -427,18 +428,18 @@ main_menu() {
   echo -e $ASCII_L"   "Select the DECENOMY coin you want to manage"    "$ASCII_R
   echo -e $ASCII_LINE
   echo
-  echo -e " "[-] Azzure - AZR"            |-|-|   "[-] Beacon - BECN
+  echo -e " "[1] Azzure - AZR"            |-|-|   "[-] Beacon - BECN
   echo -e " "[-] Birake - BIR"            |-|-|   "[4] Cryptoflow - CFL
-  echo -e " "[-] Cryptosaga - SAGA"       |-|-|   "[6] Dash Diamond - DASHD
+  echo -e " "[5] Cryptosaga - SAGA"       |-|-|   "[6] Dash Diamond - DASHD
   echo -e " "[-] Eskacoin - ESK"          |-|-|   "[8] Flits - FLS
   echo -e " "[9] Jackpot - 777"           |-|-|   "[10] Kyanite - KYAN
   echo -e " "[11] Mobility Coin - MOBIC"  |-|-|   "[12] Monk - MONK
-  echo -e " "[--] One World - OWO"        |-|-|   "[14] Peony - PNY
+  echo -e " "[13] One World - OWO"        |-|-|   "[14] Peony - PNY
   echo -e " "[15] Sapphire - SAPP"        |-|-|   "[--] Suvereno - SUV
-  echo -e " "[--] Ultra Clear - UCR"      |-|-|   "
+  echo -e " "[17] Ultra Clear - UCR"      |-|-|   "
   echo
   echo -e $ASCII_LINE
-  echo -e " "[18] ${YELLOW}Update this script${NC}"     |-|-|   "[19] ${YELLOW}Overview Center${NC}
+  echo -e " "[18] ${YELLOW}Other options${NC}"     |-|-|   "[19] ${YELLOW}Overview Center${NC}
   echo -e $ASCII_LINE
   echo -e "\t\t\t   [0]  Exit"
   echo -e $ASCII_LINE
@@ -447,9 +448,9 @@ main_menu() {
 
   while true; do
     case $opt in
-      #1) clear
-      #   var_azr
-      # ;;
+      1) clear
+         var_azr
+      ;;
       #2) clear
       #   var_becn
       # ;;
@@ -459,9 +460,9 @@ main_menu() {
       4) clear
          var_cfl
       ;;
-      #5) clear
-      #   var_saga
-      # ;;
+      5) clear
+         var_saga
+      ;;
       6) clear
          var_dashd
       ;;
@@ -483,9 +484,9 @@ main_menu() {
       12) clear
           var_monk
       ;;
-      #13) clear
-      #    var_owo
-      # ;;
+      13) clear
+          var_owo
+      ;;
       14) clear
           var_pny
       ;;
@@ -495,15 +496,14 @@ main_menu() {
       #16) clear
       #    var_suv
       # ;;
-      #17) clear
-      #    var_ucr
-      # ;;
+      17) clear
+          var_ucr
+      ;;
       18) clear
-          update_script
+          other_options
       ;;
       19) clear
           overview_center
-          main_menu
       ;;
       0) clear
          exit
@@ -570,7 +570,6 @@ coin_selected() {
       read opt
     done
   else 
- 
     header
     header_display
     echo
@@ -708,6 +707,7 @@ mn_multinode_management() {
   echo -e " "[1] List of masternodes in multinode List
   echo -e " "[2] Add masternode to multinode List
   echo -e " "[3] Delete masternode from multinode List
+  echo -e " "[4] Bulk activemasternode.conf management
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -725,6 +725,9 @@ mn_multinode_management() {
       ;;
       3) clear
          delete_multinode_masternode
+      ;;
+      4) clear
+         bulk_activemasternode         
       ;;
       0) clear
          coin_selected
@@ -948,6 +951,60 @@ delete_multinode_masternode() {
   done
 }
 
+# Menu for bulk management of activemasternode file for multinode.
+bulk_activemasternode() {
+  header
+  echo -e "\t\t  ${YELLOW} Main Menu${NC}"
+  echo -e "\t\t\t|- Coin selected"
+  echo -e "\t\t\t|- Masternode multinode management${NC}"
+  echo -e "\t\t\t${YELLOW}|- Bulk activemasternode.conf management${NC}\n"
+  allign  "$COIN_NAME" "Bulk activemasternode.conf " "Management"
+    echo
+    echo
+    echo -e "   "This option allows the masternode list to be  
+    echo -e "   "managed in a bulk way rather than one at a time,
+    echo -e "   "like the previous others options.
+    echo 
+    echo -e "   "Going forward it will open an editor. 
+    echo -e
+    echo -e "   "Follow this guidelines to properly fill the information:
+    echo
+    echo -e "   "Format: ${YELLOW}alias${NC} ${CYAN}MasternodeKey${NC}
+    echo
+    echo -e "   "Example: ${YELLOW}mn1${NC} ${CYAN}93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg${NC}
+    echo
+    echo -e "   "When everything is done on the editor, please do ${GREEN}CTRL+X${NC}
+    echo -e "   "and after the ${GREEN}Y${NC} key, followed by ${GREEN}Enter${NC}.
+    echo
+    echo
+    echo -e "   "Do you want to bulk edit the activemasternode.conf file?
+    echo
+    echo
+    echo -e $ASCII_LINE
+    echo -e "    "[1] ${YELLOW}Yes${NC}"     |-|-|     "[0] ${YELLOW}No, go back to previous menu${NC}
+    echo -e $ASCII_LINE
+    echo
+    read -p " Enter the number option: " opt
+    
+    while true; do
+      case $opt in
+        1) clear
+           nano "$CONFIGFOLDER/activemasternode.conf"
+           mn_multinode_management
+        ;;
+        0) clear
+           mn_multinode_management
+        ;;
+        *) clear
+           echo -e "Please choose one of the options available "
+           echo
+           bulk_activemasternode
+        ;;
+      esac
+      read opt
+    done
+}
+
 # Menu for wallet management.
 wallet_management() {
   header
@@ -957,11 +1014,13 @@ wallet_management() {
   allign  "$COIN_NAME" " " " Wallet management "
   echo
   echo -e " "[1] Update wallet
-  echo -e " "[2] Apply bootstrap
-  echo -e " "[3] Clean peers and banlist
-  echo -e " "[4] Connections management
-  echo -e " "[5] Restart service
-  echo -e " "[6] Delete wallet
+  echo -e " "[2] Rewind blockchain 
+  echo -e " "[3] Apply bootstrap
+  echo -e " "[4] Clean peers and banlist
+  echo -e " "[5] Connections management
+  echo -e " "[6] Daemon management
+  echo -e " "[7] Wallet Statistics 
+  echo -e " "[8] Delete wallet
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -975,21 +1034,25 @@ wallet_management() {
          update_wallet
       ;;
       2) clear
-         apply_bootstrap
+         rewind_blockchain
       ;;
       3) clear
-         peer_banlist_delete
-         wallet_management
+         apply_bootstrap
       ;;
       4) clear
-         connections_management
-         wallet_management
+         peer_banlist_delete
+         wallet_info
       ;;
       5) clear
-         restart_service
-         wallet_management
-      ;;   
+         connections_management
+      ;;
       6) clear
+         daemon_service
+      ;;   
+      7) clear
+         wallet_info
+      ;;      
+      8) clear
          delete_wallet
       ;;
       0) clear
@@ -1031,7 +1094,9 @@ update_wallet() {
     case $opt in
       1) clear
          update_wallet_process
-         wallet_management
+         version_wallet_check >/dev/null 2>&1
+         version_script_check >/dev/null 2>&1
+         wallet_info
       ;;
       0) clear
          wallet_management
@@ -1040,6 +1105,77 @@ update_wallet() {
          echo -e "Please choose one of the options available "
          echo
          update_wallet
+      ;;
+    esac
+    read opt
+  done
+}
+
+# Menu Rewind Blockchain.
+rewind_blockchain() {
+  header
+  echo -e "\t\t  ${YELLOW} Main Menu${NC}"
+  echo -e "\t\t\t|- Coin selected"
+  echo -e "\t\t\t|- Wallet management"
+  echo -e "\t\t\t${YELLOW}|- Rewind Blockchain${NC}\n"
+  allign "$COIN_NAME" "" " Rewind Blockchain "
+  echo
+  echo -e " "[1] 2 Hours Rewind
+  echo -e " "[2] 1 Day   Rewind 
+  echo -e " "[3] 1 Week  Rewind
+  echo -e " "[4] Last Checkpoint Rewind 
+  echo
+  echo -e $ASCII_LINE
+  echo -e "\t\t  [0]  Go back to previous menu"
+  echo -e $ASCII_LINE
+  echo
+  read -p " Enter the number option: " opt
+
+  while true; do
+    case $opt in
+      1) clear
+         echo -e "Rewinding the ${GREEN}$COIN_NAME${NC} blockchain 2 hours back, to move forward with a new sync."
+         su - $COIN_NAME -c "$COIN_CLI rewindblockindex 120; exit"
+         sleep 2
+         clear
+         echo -e "${GREEN}$COIN_NAME${NC} wallet synchronizing."
+         echo
+         wallet_info
+      ;;
+      2) clear
+         echo -e "Rewinding the ${GREEN}$COIN_NAME${NC} blockchain 1 day back, to move forward with a new sync."
+         su - $COIN_NAME -c "$COIN_CLI rewindblockindex 1440; exit"
+         sleep 2
+         clear
+         echo -e "${GREEN}$COIN_NAME${NC} wallet synchronizing."
+         echo
+         wallet_info
+      ;;
+      3) clear
+         echo -e "Rewinding the ${GREEN}$COIN_NAME${NC} blockchain 1 week back, to move forward with a new sync."
+         su - $COIN_NAME -c "$COIN_CLI rewindblockindex 10080; exit"
+         sleep 2
+         clear
+         echo -e "${GREEN}$COIN_NAME${NC} wallet synchronizing."
+         echo
+         wallet_info
+      ;;
+      4) clear
+         echo -e "Rewinding the ${GREEN}$COIN_NAME${NC} blockchain back to last checkpoint, to move forward with a new sync."
+         su - $COIN_NAME -c "$COIN_CLI rewindblockindex; exit"
+         sleep 2
+         clear
+         echo -e "${GREEN}$COIN_NAME${NC} wallet synchronizing."
+         echo
+         wallet_info
+      ;;               
+      0) clear
+         wallet_management
+      ;;
+      *) clear
+         echo -e "Please choose one of the options available "
+         echo
+         rewind_blockchain
       ;;
     esac
     read opt
@@ -1070,7 +1206,7 @@ apply_bootstrap() {
       1) clear
          bootstrap
          peer_banlist_delete
-         wallet_management
+         wallet_info
       ;;
       0) clear
          wallet_management
@@ -1328,19 +1464,59 @@ delete_connections() {
   fi
 }
 
+# Menu for Daemon service
+daemon_service() {
+  header
+  echo -e "\t\t  ${YELLOW} Main Menu${NC}"
+  echo -e "\t\t\t|- Coin selected"
+  echo -e "\t\t\t|- Wallet management"
+  echo -e "\t\t\t${YELLOW}|- Daemon service${NC}\n"
+  allign  "$COIN_NAME" " Daemon " "service "
+  echo
+  echo -e " "[1] Restart service
+  echo -e " "[2] Stop daemon
+  echo
+  echo -e $ASCII_LINE
+  echo -e "\t\t  [0]  Go back to previous menu"
+  echo -e $ASCII_LINE
+  echo
+  read -p " Enter the number option: " opt
+
+  while true; do
+    case $opt in
+      1) clear
+         restart_service
+      ;;
+      2) clear
+         daemon_stop
+      ;;
+      0) clear
+         wallet_management
+      ;;
+      *) clear
+         echo -e "Please choose one of the options available "
+         echo
+         daemon_service
+      ;;
+    esac
+    read opt
+  done
+}
+
 # Menu to Restart coin service
 restart_service() {
   header
   echo -e "\t\t  ${YELLOW} Main Menu${NC}"
   echo -e "\t\t\t|- Coin selected"
   echo -e "\t\t\t|- Wallet management"
+  echo -e "\t\t\t|- Daemon service"
   echo -e "\t\t\t${YELLOW}|- Restart service${NC}\n"
   allign  "$COIN_NAME" " Restart " "system service "
   echo
   echo -e " "Given that several routines in this script come with an 
   echo -e " "integrated service restart, we recommend utilizing
   echo -e " "this function only for isolated scenarios, such as 
-  echo -e " "collateral changes or in the event of service malfunction.
+  echo -e " "event of service malfunction.
   echo
   echo -e " "Do you want to proceed ?
   echo
@@ -1361,15 +1537,64 @@ restart_service() {
          clear
          echo -e "${GREEN}$COIN_NAME${NC} Service restarted "
          echo
-         wallet_management
+         wallet_info
       ;;
       0) clear
-         wallet_management
+         daemon_service
       ;;
       *) clear
          echo -e "Please choose one of the options available "
          echo
-         update_wallet
+         restart_service
+      ;;
+    esac
+    read opt
+  done
+}
+
+# Menu to Restart coin service
+daemon_stop() {
+  header
+  echo -e "\t\t  ${YELLOW} Main Menu${NC}"
+  echo -e "\t\t\t|- Coin selected"
+  echo -e "\t\t\t|- Wallet management"
+  echo -e "\t\t\t|- Daemon service"
+  echo -e "\t\t\t${YELLOW}|- Stop daemon${NC}\n"
+  allign  "$COIN_NAME" " Daemon " "stop "
+  echo
+  echo -e " "This option will permanently stop the corresponding 
+  echo -e " "wallet daemon until it is manually restarted by 
+  echo -e " "selecting the Restart Service option or by a VPS  
+  echo -e " "reboot procedure.
+  echo
+  echo -e " "Do you want to proceed ?
+  echo
+  echo -e $ASCII_LINE
+  echo -e "\t"[1] ${YELLOW}Yes${NC}"     |-|-|    "[0] ${YELLOW}No, go back to previous menu${NC}
+  echo -e $ASCII_LINE
+  echo
+  read -p " Enter the number option: " opt
+
+  while true; do
+    case $opt in
+      1) clear
+         echo
+         echo -e " Stopping current service related to ${GREEN}$COIN_NAME${NC}"
+         echo
+         systemctl stop $COIN_NAME.service > /dev/null 2>&1
+         sudo killall $COIN_DAEMON > /dev/null 2>&1
+         clear
+         echo -e " " ${GREEN}$COIN_NAME${NC} Daemon stoped
+         echo
+         wallet_info
+      ;;
+      0) clear
+         daemon_service
+      ;;
+      *) clear
+         echo -e "Please choose one of the options available "
+         echo
+         daemon_stop
       ;;
     esac
     read opt
@@ -1455,8 +1680,9 @@ stats_wallet_mn() {
 
 # Menu - Wallet statistics.
 wallet_info() {
-  EXPLORER_BLOCK=$(curl -s $EXPLORER | jq -r '.response.daemon_bestblockheight')
-  EXPLORER_HASH=$(curl -s $EXPLORER | jq -r '.response.daemon_bestblockhash')
+  EXPLORER_BLOCK=$(curl -s $EXPLORER | jq -r '.response[9].height')
+  EXPLORER_HASH=$(curl -s $EXPLORER | jq -r '.response[9].blockhash')
+  WALLET_BLOCK_HASH=$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK" 2>/dev/null)
   header
   echo -e "\t\t  ${YELLOW} Main Menu${NC}"
   echo -e "\t\t\t|- Coin selected"
@@ -1464,22 +1690,31 @@ wallet_info() {
   echo -e "\t\t\t${YELLOW}|- Wallet statistics${NC}\n"
   allign  "$COIN_NAME" " " " Wallet Statistics "
   echo
+  echo -e " ${CYAN}Wallet version${NC} "
+  echo
   echo -e " Wallet version on Github: "${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
-  echo
   echo -e " Wallet version installed: "${YELLOW}$($COIN_CLI -version | awk '{print $5}' | awk -F '-' '{print $1}')${NC}
-  echo
   echo -e " Protocol version: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==2'; exit")${NC}
   echo
-  echo -e " Number of connections:  "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getconnectioncount; exit")${NC} "( In : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  true; exit") / Out : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  false; exit") )"
+  echo -e " ${CYAN}Wallet information${NC} "
+  echo  
+  echo -e " Connections   : "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getconnectioncount; exit")${NC} "( In : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  true; exit") / Out : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  false; exit") )"
+  echo -e " Wallet    sync: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}
+  echo -e " Wallet   block: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==7'; exit")${NC}
   echo
-  echo -e " Wallet sync:    "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}
-  echo 
-  echo -e " Wallet block:   "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==7'; exit")${NC}
+  echo -e " ${CYAN}Block hash verification${NC}"
   echo
-  echo -e " Block hash verification:"
-  echo
-  echo -e " Explorer block: "${YELLOW}$EXPLORER_BLOCK${NC} hash:  ${YELLOW}${EXPLORER_HASH:0:12} ... ${EXPLORER_HASH: -12}${NC}
-  echo -e " Wallet   block: "${YELLOW}$EXPLORER_BLOCK${NC} hash:  ${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK; exit" | cut -c 1-12) ... $(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK; exit" | rev | cut -c 1-12 | rev)${NC}
+  echo -e " Explorer block: ${YELLOW}$EXPLORER_BLOCK${NC}    hash: ${YELLOW}${EXPLORER_HASH:0:12} ... ${EXPLORER_HASH: -12}${NC}"
+  if [[ "$EXPLORER_HASH" == "$WALLET_BLOCK_HASH" ]]; then
+          echo -e " Wallet   block: ${YELLOW}$EXPLORER_BLOCK${NC}    hash: ${YELLOW}${WALLET_BLOCK_HASH:0:12} ... ${WALLET_BLOCK_HASH: -12}${NC}"
+          echo -e " Wallet  Status: ${GREEN}on chain${NC}"
+          echo
+          else
+          echo -e " Wallet  Status: ${RED}Forked - Block hash doesn't match${NC}"  
+          echo -e " ${RED}Check again in 5 minutes. If the fork status repeats"
+          echo -e " please select option [2] Wallet Management.${NC}" 
+          echo
+  fi
   echo
   echo
   echo
@@ -1573,6 +1808,201 @@ masternode_info() {
     esac
     read opt
   done
+}
+# Menu - Others option overview
+other_options() {
+  header
+  echo
+  echo -e $ASCII_LINE
+  echo -e "\t       $ASCII_L   Other options  $ASCII_R"
+  echo -e $ASCII_LINE
+  echo
+  echo -e " "[1] Wallet and script version check
+  echo -e " "[2] Update script
+  echo -e " "[3] Stop all wallets daemons
+  echo -e " "[4] Restart all wallets daemons
+  echo -e " "[5] Restart VPS
+  echo
+  echo -e $ASCII_LINE
+  echo -e "\t\t  [0]  Go back to previous menu"
+  echo -e $ASCII_LINE
+  echo
+  read -p " Enter the number option: " opt
+
+    while true; do
+      case $opt in
+        1) clear
+           echo
+           echo -e "${BLUE}${BOLD}
+           \t    ██████╗ ███╗   ███╗██╗   ██╗
+           \t    ██╔══██╗████╗ ████║╚██╗ ██╔╝
+           \t    ██║  ██║██╔████╔██║ ╚████╔╝ 
+           \t    ██║  ██║██║╚██╔╝██║  ╚██╔╝  
+           \t    ██████╔╝██║ ╚═╝ ██║   ██║   
+           \t    ╚═════╝ ╚═╝     ╚═╝   ╚═╝   
+           \t                       $SCRIPVERSION${NC}
+           \t   DECENOMY Masternode Script
+           \t ******************************"
+           echo
+           echo -e $ASCII_LINE
+           echo -e "     $ASCII_L   Wallets and script update overview   $ASCII_R"
+           echo -e $ASCII_LINE
+           echo
+           version_wallet_check
+           version_script_check
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t\t     Press enter to go back"
+           echo -e $ASCII_LINE
+           read -rsn1 key
+           if [[ $key == "" ]]; then
+             clear
+             other_options
+             else
+             while true; do
+                 echo -e "Invalid option. Press enter to go back."
+                 read -rsn1 -t 3 key
+               if [[ $key == "" ]]; then
+                 clear
+                 other_options
+                 break
+               fi
+             done
+           fi
+        ;;
+        2) clear
+           update_script
+        ;;
+        3) clear
+           header
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t  $ASCII_L   Stopping all wallets daemons   $ASCII_R"
+           echo -e $ASCII_LINE
+           echo
+           for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d 2>/dev/null)
+           do
+              if [ -e "$dir/activemasternode.conf" ]; then
+               var_overview
+               echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
+               echo -e " "The daemon as been stopped
+               echo
+               systemctl stop $COIN_NAME1.service > /dev/null 2>&1
+               sudo killall $COIN_DAEMON1 > /dev/null 2>&1 
+              fi
+           done
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t\t     Press enter to go back"
+           echo -e $ASCII_LINE
+           read -rsn1 key
+           if [[ $key == "" ]]; then
+             clear
+             other_options
+             else
+             while true; do
+                 echo -e "Invalid option. Press enter to go back."
+                 read -rsn1 -t 3 key
+               if [[ $key == "" ]]; then
+                 clear
+                 other_options
+                 break
+               fi
+             done
+           fi      
+        ;;
+        4) clear
+           header
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t  $ASCII_L   Restart all wallets daemons   $ASCII_R"
+           echo -e $ASCII_LINE
+           echo
+           for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d 2>/dev/null)
+           do
+             if [ -e "$dir/activemasternode.conf" ]; then
+               var_overview
+               echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
+               echo -e " "The daemon as been started
+               systemctl stop $COIN_NAME1.service > /dev/null 2>&1
+               systemctl daemon-reload
+               sleep 3
+               systemctl start $COIN_NAME1.service
+               systemctl enable $COIN_NAME1.service >/dev/null 2>&1
+               sleep 5
+               echo -e " "Service runing
+               echo
+             fi
+           done
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t\t     Press enter to go back"
+           echo -e $ASCII_LINE
+           read -rsn1 key
+           if [[ $key == "" ]]; then
+             clear
+             other_options
+             else
+             while true; do
+                 echo -e "Invalid option. Press enter to go back."
+                 read -rsn1 -t 3 key
+               if [[ $key == "" ]]; then
+                 clear
+                 other_options
+                 break
+               fi
+             done
+           fi
+        ;;
+        5) clear
+           header
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t     $ASCII_L   Restarting the VPS   $ASCII_R"
+           echo -e $ASCII_LINE
+           echo
+           echo -e " "This option will restart the entire VPS
+           echo -e " "where this script is runing. All the
+           echo -e " "services installed will be restarted 
+           echo
+           echo -e " "Would you like to proceed?
+           echo
+           echo -e $ASCII_LINE
+           echo -e "\t"[1] ${YELLOW}Yes${NC}"     |-|-|    "[0] ${YELLOW}No, go back to previous menu${NC}
+           echo -e $ASCII_LINE
+           echo
+           read -p " Enter the number option: " opt
+
+           while true; do
+             case $opt in
+               1) clear
+                  echo
+                  echo "Restarting the VPS..."
+                  shutdown -rF now
+               ;;
+               0) clear
+                  other_options
+               ;;
+               *) 
+                  echo -e "Please choose one of the options available "
+                  echo
+               ;;
+             esac
+             read opt
+           done
+        ;;
+        0) clear
+           main_menu
+        ;;
+        *) clear
+           echo -e "Please choose one of the options available "
+           echo
+           other_options
+        ;;
+      esac
+      read opt
+    done
+
 }
 
 # Menu - Others
@@ -2140,25 +2570,33 @@ function overview_center() {
   echo
   echo -e " Wallet intalled overview"  
   echo
-  for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d)
+  for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d 2>/dev/null)
   do
     if [ -e "$dir/activemasternode.conf" ]; then
           var_overview
-      EXPLORER1=https://explorer.decenomy.net/api/v2/$TICKER1/status
-      EXPLORER_BLOCK1=$(curl -s $EXPLORER1 | jq -r '.response.daemon_bestblockheight')
-      EXPLORER_HASH1=$(curl -s $EXPLORER1 | jq -r '.response.daemon_bestblockhash')
+      EXPLORER1=https://explorer.decenomy.net/api/v2/$TICKER1/blocks
+      EXPLORER_BLOCK1=$(curl -s $EXPLORER1 | jq -r '.response[9].height')
+      EXPLORER_HASH1=$(curl -s $EXPLORER1 | jq -r '.response[9].blockhash')
+      WALLET_BLOCK_HASH1=$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1" 2>/dev/null)
       echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
-      echo -e " Masternodes:   ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getactivemasternodecount | jq -r '\"total \(.total) | not_capable \(.not_capable) | started \(.started)\"'; exit" | tr -d '"')${NC}"  
-      echo -e " Wallet Sync:   ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}""  "" Connections: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
-      echo -e " Explorer block\t${YELLOW}$EXPLORER_BLOCK1${NC} hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}"
-      echo -e " Wallet   block\t${YELLOW}$EXPLORER_BLOCK1${NC} hash: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1; exit" | cut -c 1-12) ... $(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1; exit" | rev | cut -c 1-12 | rev)${NC}"      
-      echo
+      echo -e " Masternodes:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getactivemasternodecount | jq -r '\"total \(.total) | not_capable \(.not_capable) | started \(.started)\"'; exit" | tr -d '"')${NC}"
+      echo -e " Explorer block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}" 
+      if [[ "$EXPLORER_HASH1" == "$WALLET_BLOCK_HASH1" ]]; then
+          echo -e " Wallet   block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${WALLET_BLOCK_HASH1:0:12} ... ${WALLET_BLOCK_HASH1: -12}${NC}"
+          echo -e " Wallet  Status: ${GREEN}on chain${NC}"" ""  Connections: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
+          echo
+          else
+          echo -e " Connections:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
+          echo -e " Wallet  Status: ${RED}Forked - Block hash doesn't match${NC}"  
+          echo -e " ${RED}Check again in 5 minutes. If the fork status repeats"
+          echo -e " please view wallet statistic of $COIN_NAME1 for more info.${NC}" 
+          echo
+      fi
     fi
   done
   echo
   echo -e " "[1] Reload information
   echo -e " "[2] Clean system cache memory
-  echo -e " "[3] Wallets and script update overview
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -2174,35 +2612,6 @@ function overview_center() {
       2) clear
          sync; echo 1 > /proc/sys/vm/drop_caches
          overview_center
-      ;;
-      3) clear
-         header
-         echo
-         echo -e $ASCII_LINE
-         echo -e "     $ASCII_L   Wallets and script update overview   $ASCII_R"
-         echo -e $ASCII_LINE
-         echo
-         version_wallet_check
-         version_script_check
-         echo
-         echo -e $ASCII_LINE
-         echo -e "\t\t     Press enter to go back"
-         echo -e $ASCII_LINE
-         read -rsn1 key
-         if [[ $key == "" ]]; then
-         clear
-         overview_center
-         else
-         while true; do
-         echo -e "Invalid option. Press enter to go back."
-         read -rsn1 -t 3 key
-         if [[ $key == "" ]]; then
-         clear
-         overview_center
-         break
-         fi
-         done
-         fi
       ;;
       0) clear
          main_menu
@@ -2232,6 +2641,10 @@ function version_script_check() {
     echo -e " --- "
     echo
     echo -e "${GREEN} - New script version available:${NC} $LATEST_VERSION"
+    echo >> update_report.txt
+    echo -e "--- " >> update_report.txt
+    echo >> update_report.txt
+    echo -e "- New ${GREEN}script${NC} version available: ${GREEN}$LATEST_VERSION${NC}" >> update_report.txt
     else
     echo -e " --- "
     echo
@@ -2244,6 +2657,7 @@ function version_script_check() {
 function version_wallet_check() {
     local null=false
     local newversion=false
+    echo -n "" > update_report.txt
     for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d)
     do
         if [ -e "$dir/activemasternode.conf" ]; then
@@ -2255,7 +2669,9 @@ function version_wallet_check() {
             else
                 CURRENT_WALLET=$(su - "$COIN_NAME1" -c "$COIN_CLI1 -version; exit" | awk '/version/{print $NF}' | awk -F '-' '{print $1}')
                 if [ "$CURRENT_WALLET" != "$LATEST_WALLET" ]; then
-                    echo -e "${GREEN} - New $COIN_NAME1 wallet version available:${NC} $LATEST_WALLET"
+                    echo -e " - New ${GREEN}$COIN_NAME1${NC} wallet version available:  ${GREEN}$LATEST_WALLET${NC}"
+                    echo >> update_report.txt
+                    echo " - New ${GREEN}$COIN_NAME1${NC} wallet version available: ${GREEN}$LATEST_WALLET${NC}" >> update_report.txt
                     echo
                     newversion=true
                 fi
@@ -2308,6 +2724,8 @@ function del_wallet() {
   purge_old_installation
   rm -rf /home/users/$COIN_NAME
   userdel $COIN_NAME
+  version_wallet_check >/dev/null 2>&1
+  version_script_check >/dev/null 2>&1
   main_menu
 }
 
@@ -2368,6 +2786,7 @@ function os_check() {
 function system_script() {
   command -v jq >/dev/null 2>&1 || apt-get install jq -y >/dev/null 2>&1
   command -v p7zip-full >/dev/null 2>&1 || apt install p7zip-full -y >/dev/null 2>&1
+  command -v nano >/dev/null 2>&1 || apt-get install nano -y >/dev/null 2>&1
   [ -x decenomy.sh ] || (echo " Script permissions have been updated to allow it to be executed as a file" && chmod +x decenomy.sh) && mv decenomy.sh decenomy
 }
 
@@ -2383,6 +2802,12 @@ if ! [ -f "decenomy" ]; then
   echo
   system_script
 fi
+command -v nano >/dev/null 2>&1 || apt-get install nano -y >/dev/null 2>&1
 sleep 2
+clear
+echo
+echo -e " Checking if new wallets version available..."
+version_wallet_check >/dev/null 2>&1
+version_script_check >/dev/null 2>&1
 clear
 main_menu
