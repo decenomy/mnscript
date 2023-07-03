@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.6
+SCRIPVERSION=v1.0.7
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -428,14 +428,14 @@ main_menu() {
   echo -e $ASCII_L"   "Select the DECENOMY coin you want to manage"    "$ASCII_R
   echo -e $ASCII_LINE
   echo
-  echo -e " "[1] Azzure - AZR"            |-|-|   "[-] Beacon - BECN
-  echo -e " "[-] Birake - BIR"            |-|-|   "[4] Cryptoflow - CFL
+  echo -e " "[1] Azzure - AZR"            |-|-|   "[2] Beacon - BECN
+  echo -e " "[3] Birake - BIR"            |-|-|   "[4] Cryptoflow - CFL
   echo -e " "[5] Cryptosaga - SAGA"       |-|-|   "[6] Dash Diamond - DASHD
-  echo -e " "[-] Eskacoin - ESK"          |-|-|   "[8] Flits - FLS
+  echo -e " "[7] Eskacoin - ESK"          |-|-|   "[8] Flits - FLS
   echo -e " "[9] Jackpot - 777"           |-|-|   "[10] Kyanite - KYAN
   echo -e " "[11] Mobility Coin - MOBIC"  |-|-|   "[12] Monk - MONK
   echo -e " "[13] One World - OWO"        |-|-|   "[14] Peony - PNY
-  echo -e " "[15] Sapphire - SAPP"        |-|-|   "[--] Suvereno - SUV
+  echo -e " "[15] Sapphire - SAPP"        |-|-|   "[16] Suvereno - SUV
   echo -e " "[17] Ultra Clear - UCR"      |-|-|   "
   echo
   echo -e $ASCII_LINE
@@ -451,12 +451,12 @@ main_menu() {
       1) clear
          var_azr
       ;;
-      #2) clear
-      #   var_becn
-      # ;;
-      #3) clear
-      #   var_bir
-      # ;;
+      2) clear
+         var_becn
+      ;;
+      3) clear
+         var_bir
+      ;;
       4) clear
          var_cfl
       ;;
@@ -466,9 +466,9 @@ main_menu() {
       6) clear
          var_dashd
       ;;
-      #7) clear
-      #   var_esk
-      # ;;
+      7) clear
+         var_esk
+      ;;
       8) clear
          var_fls
       ;;
@@ -493,9 +493,9 @@ main_menu() {
       15) clear
           var_sapp
       ;;
-      #16) clear
-      #    var_suv
-      # ;;
+      16) clear
+          var_suv
+      ;;
       17) clear
           var_ucr
       ;;
