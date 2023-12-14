@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.7
+SCRIPVERSION=v1.0.8
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -111,7 +111,7 @@ var_azr() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14725
   RPC_PORT=14724
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -130,7 +130,7 @@ var_becn() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36552
   RPC_PORT=36553
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -149,7 +149,7 @@ var_bir() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=39697
   RPC_PORT=39698
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -168,7 +168,7 @@ var_cfl() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=13333
   RPC_PORT=13334
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -188,7 +188,7 @@ var_saga() {
   COIN_NAME='cryptosaga'
   COIN_PORT=37552
   RPC_PORT=37553
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -207,7 +207,7 @@ var_dashd() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=12341
   RPC_PORT=23452
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -226,7 +226,7 @@ var_esk() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14215
   RPC_PORT=14214
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -245,7 +245,7 @@ var_fls() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32972
   RPC_PORT=32973
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -264,7 +264,7 @@ var_777() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=17771
   RPC_PORT=27772
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -283,7 +283,7 @@ var_kyan() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=7757
   RPC_PORT=7758
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -302,7 +302,7 @@ var_mobic() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=22487
   RPC_PORT=22488
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -321,7 +321,7 @@ var_monk() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32270
   RPC_PORT=32271
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -340,7 +340,7 @@ var_owo() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32112
   RPC_PORT=32113
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -359,7 +359,7 @@ var_pny() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36779
   RPC_PORT=36780
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }	
 
@@ -378,7 +378,7 @@ var_sapp() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=45328
   RPC_PORT=45329
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -397,7 +397,7 @@ var_suv() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=18976
   RPC_PORT=18977
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -416,7 +416,7 @@ var_ucr() {
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32628
   RPC_PORT=32627
-  BOOTSTRAP=https://explorer.decenomy.net/bootstraps/$TICKER/bootstrap.zip
+  BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
   user_creations
 }
 
@@ -1710,8 +1710,8 @@ wallet_info() {
           echo -e " Wallet  Status: ${GREEN}on chain${NC}"
           echo
           else
-          echo -e " Wallet  Status: ${RED}Forked - Block hash doesn't match${NC}"  
-          echo -e " ${RED}Check again in 5 minutes. If the fork status repeats"
+          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"  
+          echo -e " ${RED}Check again in 5 minutes. If this status repeats"
           echo -e " please select option [2] Wallet Management.${NC}" 
           echo
   fi
@@ -2568,7 +2568,7 @@ function overview_center() {
   echo -e " ${GREEN}Total disk space${NC}  $(df -h -t ext4 --total | awk '/total/ {print $2 " (" $5 " in use)"}')"
   echo -e " ${GREEN}Total RAM memory${NC} $total_mem (${percentage_used}% in use) - ${GREEN}Cache Mem${NC} $cache_mem"
   echo
-  echo -e " Wallet intalled overview"  
+  echo -e " Overview of wallets installed"  
   echo
   for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d 2>/dev/null)
   do
@@ -2587,8 +2587,8 @@ function overview_center() {
           echo
           else
           echo -e " Connections:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
-          echo -e " Wallet  Status: ${RED}Forked - Block hash doesn't match${NC}"  
-          echo -e " ${RED}Check again in 5 minutes. If the fork status repeats"
+          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"  
+          echo -e " ${RED}Check again in 5 minutes. If this status repeats"
           echo -e " please view wallet statistic of $COIN_NAME1 for more info.${NC}" 
           echo
       fi
