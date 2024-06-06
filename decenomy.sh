@@ -2,7 +2,7 @@
 
 # DECENOMY (DMY) Masternode Multinode Script.
 # Designed to automate masternode multinode installation on pre-purchased Virtual Private Servers (VPS), with maintenance features built in.
-# (c) João@DECENOMY, 2023
+# (c) DECENOMY, 2023
 # All rights reserved 
 # MIT License
 
@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.8
+SCRIPVERSION=v1.0.9
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -33,7 +33,7 @@ fi
 header() {
   sed -e "s|\${GREEN}|$GREEN|g" -e "s|\${NC}|$NC|g" update_report.txt | while read -r line; do echo -e "$line"; done
   echo
-  echo -e "${BLUE}${BOLD}
+  echo -e "${BLUE}
   \t\t    ██████╗ ███╗   ███╗██╗   ██╗
   \t\t    ██╔══██╗████╗ ████║╚██╗ ██╔╝
   \t\t    ██║  ██║██╔████╔██║ ╚████╔╝ 
@@ -107,7 +107,7 @@ var_azr() {
   TICKER='AZR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14725
   RPC_PORT=14724
@@ -126,7 +126,7 @@ var_becn() {
   TICKER='BECN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36552
   RPC_PORT=36553
@@ -145,7 +145,7 @@ var_bir() {
   TICKER='BIR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=39697
   RPC_PORT=39698
@@ -164,7 +164,7 @@ var_cfl() {
   TICKER='CFL'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=13333
   RPC_PORT=13334
@@ -183,7 +183,7 @@ var_saga() {
   TICKER='SAGA'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_NAME='cryptosaga'
   COIN_PORT=37552
@@ -203,7 +203,7 @@ var_dashd() {
   TICKER='DASHD'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=12341
   RPC_PORT=23452
@@ -222,7 +222,7 @@ var_esk() {
   TICKER='ESK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14215
   RPC_PORT=14214
@@ -241,7 +241,7 @@ var_fls() {
   TICKER='FLS'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32972
   RPC_PORT=32973
@@ -260,7 +260,7 @@ var_777() {
   TICKER='777'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=17771
   RPC_PORT=27772
@@ -279,7 +279,7 @@ var_kyan() {
   TICKER='KYAN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=7757
   RPC_PORT=7758
@@ -298,7 +298,7 @@ var_mobic() {
   TICKER='MOBIC'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=22487
   RPC_PORT=22488
@@ -317,7 +317,7 @@ var_monk() {
   TICKER='MONK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32270
   RPC_PORT=32271
@@ -336,7 +336,7 @@ var_owo() {
   TICKER='OWO'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32112
   RPC_PORT=32113
@@ -355,7 +355,7 @@ var_pny() {
   TICKER='PNY'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36779
   RPC_PORT=36780
@@ -374,7 +374,7 @@ var_sapp() {
   TICKER='SAPP'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=45328
   RPC_PORT=45329
@@ -393,7 +393,7 @@ var_suv() {
   TICKER='SUV'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=18976
   RPC_PORT=18977
@@ -412,7 +412,7 @@ var_ucr() {
   TICKER='UCR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s $GITHUB | grep "browser_download_url.*Linux\\.zip" | cut -d : -f 2,3 | tr -d \" | xargs`
+  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32628
   RPC_PORT=32627
