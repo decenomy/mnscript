@@ -2682,6 +2682,14 @@ function version_wallet_check() {
         echo -e "   There have been too many requests made from this machine."
         echo -e "   Please allow some time before trying again."
         echo
+        echo -e "   Alternatively, create a Github Personal access token (classic) at https://github.com/settings/tokens"
+        echo -e "   and store this token in 'github_token.sh' in the same direcory which you run this script."
+        echo -e "   github_token.sh should look like this:"
+        echo
+        echo -e "   #!/bin/bash"
+        echo -e "   TOKEN="<your token here>"
+
+        echo
     elif [ "$newversion" = false ]; then
         echo -e " - All wallets installed are on the latest version available."
         echo
