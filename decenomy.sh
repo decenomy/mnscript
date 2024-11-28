@@ -3,7 +3,7 @@
 # DECENOMY (DMY) Masternode Multinode Script.
 # Designed to automate masternode multinode installation on pre-purchased Virtual Private Servers (VPS), with maintenance features built in.
 # (c) DECENOMY, 2023
-# All rights reserved 
+# All rights reserved
 # MIT License
 
 # Term colors.
@@ -21,7 +21,7 @@ ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
 SCRIPVERSION=v1.0.9
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
-SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
+SCRIPT_FILE=`curl $GITHUB_AUTH -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
 if [[ -z "$NODEIP" ]]; then
   #if we get here, then most likely icanhazip.com is timing out
@@ -59,7 +59,7 @@ allign() {
   local ASCII_R_LEN=${#ASCII_R}
   local TOTAL_LEN=$((ASCII_L_LEN + TEXT_1_LEN + COIN_NAME_LEN + TEXT_2_LEN + ASCII_R_LEN))
   local PADDING=$(((MAX_LEN - TOTAL_LEN + 1) / 2))
-  
+
   if [ "$PADDING" -lt 0 ]; then
     PADDING=0
   fi
@@ -107,7 +107,7 @@ var_azr() {
   TICKER='AZR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14725
   RPC_PORT=14724
@@ -126,7 +126,7 @@ var_becn() {
   TICKER='BECN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36552
   RPC_PORT=36553
@@ -145,7 +145,7 @@ var_bir() {
   TICKER='BIR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=39697
   RPC_PORT=39698
@@ -164,7 +164,7 @@ var_cfl() {
   TICKER='CFL'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=13333
   RPC_PORT=13334
@@ -183,9 +183,8 @@ var_saga() {
   TICKER='SAGA'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
-  COIN_NAME='cryptosaga'
   COIN_PORT=37552
   RPC_PORT=37553
   BOOTSTRAP=https://bootstraps.decenomy.net/$TICKER/bootstrap.zip
@@ -203,7 +202,7 @@ var_dashd() {
   TICKER='DASHD'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=12341
   RPC_PORT=23452
@@ -222,7 +221,7 @@ var_esk() {
   TICKER='ESK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14215
   RPC_PORT=14214
@@ -241,7 +240,7 @@ var_fls() {
   TICKER='FLS'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32972
   RPC_PORT=32973
@@ -260,7 +259,7 @@ var_777() {
   TICKER='777'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=17771
   RPC_PORT=27772
@@ -279,7 +278,7 @@ var_kyan() {
   TICKER='KYAN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=7757
   RPC_PORT=7758
@@ -298,7 +297,7 @@ var_mobic() {
   TICKER='MOBIC'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=22487
   RPC_PORT=22488
@@ -317,7 +316,7 @@ var_monk() {
   TICKER='MONK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32270
   RPC_PORT=32271
@@ -336,7 +335,7 @@ var_owo() {
   TICKER='OWO'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32112
   RPC_PORT=32113
@@ -355,7 +354,7 @@ var_pny() {
   TICKER='PNY'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36779
   RPC_PORT=36780
@@ -374,7 +373,7 @@ var_sapp() {
   TICKER='SAPP'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=45328
   RPC_PORT=45329
@@ -393,7 +392,7 @@ var_suv() {
   TICKER='SUV'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=18976
   RPC_PORT=18977
@@ -412,7 +411,7 @@ var_ucr() {
   TICKER='UCR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
   EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
-  COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
+  COIN_TGZ=`curl $GITHUB_AUTH -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32628
   RPC_PORT=32627
@@ -569,7 +568,7 @@ coin_selected() {
       esac
       read opt
     done
-  else 
+  else
     header
     header_display
     echo
@@ -615,10 +614,10 @@ install_mn_multinode() {
     echo
     echo -e "\t\t\t   ${RED}WARNING${NC}"
     echo
-    echo -e "        "This installation is for 
+    echo -e "        "This installation is for
     echo -e "        "one ${GREEN}$COIN_NAME${NC} Masternode Multinode instance.
-    echo 
-    echo -e "        "There is a ${GREEN}$COIN_NAME${NC} Masternode 
+    echo
+    echo -e "        "There is a ${GREEN}$COIN_NAME${NC} Masternode
     echo -e "        "installed in this machine, this action will
     echo -e "        "override that , and all related data will be lost.
     echo
@@ -630,7 +629,7 @@ install_mn_multinode() {
     echo -e $ASCII_LINE
     echo
     read -p " Enter the number option: " opt
-    
+
     while true; do
       case $opt in
         1) clear
@@ -727,7 +726,7 @@ mn_multinode_management() {
          delete_multinode_masternode
       ;;
       4) clear
-         bulk_activemasternode         
+         bulk_activemasternode
       ;;
       0) clear
          coin_selected
@@ -760,7 +759,7 @@ list_multinode_masternode() {
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
   echo -e $ASCII_LINE
-  echo 
+  echo
   read -p " Enter the number option: " -n 1 -r
 
   if [ "$REPLY" == "0" ]; then
@@ -785,7 +784,7 @@ add_multinode_masternode() {
     echo
     echo -e " "This is the content of the file ${YELLOW}activemasternode.conf${NC}
     echo -e " "from ${GREEN}$COIN_NAME${NC} multinode
-    echo 
+    echo
     cat $CONFIGFOLDER/activemasternode.conf
     echo
     echo -e $ASCII_LINE
@@ -850,7 +849,7 @@ add_multinode_masternode() {
     echo -e $ASCII_LINE
     echo
     echo -e " For your ${GREEN}$COIN_NAME${NC} multinode masternode"
-    echo -e " Do you want to register another masternode?" 
+    echo -e " Do you want to register another masternode?"
     echo
     echo -e $ASCII_LINE
     echo -e	"\t"[1] ${YELLOW}Yes${NC}"     |-|-|    "[0] ${YELLOW}No, go back to previous menu${NC}
@@ -910,7 +909,7 @@ delete_multinode_masternode() {
     echo -e " The selected line number is not available"
     delete_multinode_masternode
   else
-    echo 
+    echo
     clear
   fi
 
@@ -961,11 +960,11 @@ bulk_activemasternode() {
   allign  "$COIN_NAME" "Bulk activemasternode.conf " "Management"
     echo
     echo
-    echo -e "   "This option allows the masternode list to be  
+    echo -e "   "This option allows the masternode list to be
     echo -e "   "managed in a bulk way rather than one at a time,
     echo -e "   "like the previous others options.
-    echo 
-    echo -e "   "Going forward it will open an editor. 
+    echo
+    echo -e "   "Going forward it will open an editor.
     echo -e
     echo -e "   "Follow this guidelines to properly fill the information:
     echo
@@ -985,7 +984,7 @@ bulk_activemasternode() {
     echo -e $ASCII_LINE
     echo
     read -p " Enter the number option: " opt
-    
+
     while true; do
       case $opt in
         1) clear
@@ -1014,12 +1013,12 @@ wallet_management() {
   allign  "$COIN_NAME" " " " Wallet management "
   echo
   echo -e " "[1] Update wallet
-  echo -e " "[2] Rewind blockchain 
+  echo -e " "[2] Rewind blockchain
   echo -e " "[3] Apply bootstrap
   echo -e " "[4] Clean peers and banlist
   echo -e " "[5] Connections management
   echo -e " "[6] Daemon management
-  echo -e " "[7] Wallet Statistics 
+  echo -e " "[7] Wallet Statistics
   echo -e " "[8] Delete wallet
   echo
   echo -e $ASCII_LINE
@@ -1048,10 +1047,10 @@ wallet_management() {
       ;;
       6) clear
          daemon_service
-      ;;   
+      ;;
       7) clear
          wallet_info
-      ;;      
+      ;;
       8) clear
          delete_wallet
       ;;
@@ -1078,7 +1077,7 @@ update_wallet() {
   echo -e "\t\t\t${YELLOW}|- Update wallet${NC}\n"
   allign  "$COIN_NAME" " " "Masternode wallet update"
   echo
-  echo -e " "Wallet version on Github"  : "${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
+  echo -e " "Wallet version on Github"  : "${YELLOW}$(curl $GITHUB_AUTH -s $GITHUB | jq -r '.tag_name')${NC}
   echo
   echo -e " "Wallet version installed"  : "${YELLOW}$($COIN_CLI -version | awk '{print $5}' | awk -F '-' '{print $1}')${NC}
   echo
@@ -1121,9 +1120,9 @@ rewind_blockchain() {
   allign "$COIN_NAME" "" " Rewind Blockchain "
   echo
   echo -e " "[1] 2 Hours Rewind
-  echo -e " "[2] 1 Day   Rewind 
+  echo -e " "[2] 1 Day   Rewind
   echo -e " "[3] 1 Week  Rewind
-  echo -e " "[4] Last Checkpoint Rewind 
+  echo -e " "[4] Last Checkpoint Rewind
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -1168,7 +1167,7 @@ rewind_blockchain() {
          echo -e "${GREEN}$COIN_NAME${NC} wallet synchronizing."
          echo
          wallet_info
-      ;;               
+      ;;
       0) clear
          wallet_management
       ;;
@@ -1231,8 +1230,8 @@ connections_management() {
   allign "$COIN_NAME" "" " Wallet connections management "
   echo
   echo -e " "[1] List of extra connections on the wallet
-  echo -e " "[2] Add connections to the wallet 
-  echo -e " "[3] Delete connections from the wallet 
+  echo -e " "[2] Add connections to the wallet
+  echo -e " "[3] Delete connections from the wallet
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -1322,7 +1321,7 @@ add_connections() {
   echo
   echo -e " "${YELLOW}https://explorer.decenomy.net/$TICKER/peers${NC}
   echo
-  echo -e " "- On connected network clients, following the last subversion  ${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
+  echo -e " "- On connected network clients, following the last subversion  ${YELLOW}$(curl $GITHUB_AUTH -s $GITHUB | jq -r '.tag_name')${NC}
   echo -e " "- Click on node list button.
   echo -e " "- Copy the content inside and past it below
   echo
@@ -1428,10 +1427,10 @@ delete_connections() {
           echo -e "\t\t\t${YELLOW}|- Delete extra connections ${NC}\n"
           allign  "$COIN_NAME" "Delete " " extra connections "
           echo
-          echo -e " "Do you really want to delete the line number $NUMBER  
-          echo -e " "from ${YELLOW}$CONFIG_FILE${NC} 
+          echo -e " "Do you really want to delete the line number $NUMBER
+          echo -e " "from ${YELLOW}$CONFIG_FILE${NC}
           echo
-          echo -e "  "$(cat $CONFIGFOLDER/$CONFIG_FILE | head -n $NUMBER | tail -n 1) 
+          echo -e "  "$(cat $CONFIGFOLDER/$CONFIG_FILE | head -n $NUMBER | tail -n 1)
           echo
           echo -e $ASCII_LINE
           echo -e "\t"[1] ${YELLOW}Yes${NC}"     |-|-|    "[0] ${YELLOW}No, go back to previous menu${NC}
@@ -1513,9 +1512,9 @@ restart_service() {
   echo -e "\t\t\t${YELLOW}|- Restart service${NC}\n"
   allign  "$COIN_NAME" " Restart " "system service "
   echo
-  echo -e " "Given that several routines in this script come with an 
+  echo -e " "Given that several routines in this script come with an
   echo -e " "integrated service restart, we recommend utilizing
-  echo -e " "this function only for isolated scenarios, such as 
+  echo -e " "this function only for isolated scenarios, such as
   echo -e " "event of service malfunction.
   echo
   echo -e " "Do you want to proceed ?
@@ -1562,9 +1561,9 @@ daemon_stop() {
   echo -e "\t\t\t${YELLOW}|- Stop daemon${NC}\n"
   allign  "$COIN_NAME" " Daemon " "stop "
   echo
-  echo -e " "This option will permanently stop the corresponding 
-  echo -e " "wallet daemon until it is manually restarted by 
-  echo -e " "selecting the Restart Service option or by a VPS  
+  echo -e " "This option will permanently stop the corresponding
+  echo -e " "wallet daemon until it is manually restarted by
+  echo -e " "selecting the Restart Service option or by a VPS
   echo -e " "reboot procedure.
   echo
   echo -e " "Do you want to proceed ?
@@ -1692,12 +1691,12 @@ wallet_info() {
   echo
   echo -e " ${CYAN}Wallet version${NC} "
   echo
-  echo -e " Wallet version on Github: "${YELLOW}$(curl -s $GITHUB | jq -r '.tag_name')${NC}
+  echo -e " Wallet version on Github: "${YELLOW}$(curl $GITHUB_AUTH -s $GITHUB | jq -r '.tag_name')${NC}
   echo -e " Wallet version installed: "${YELLOW}$($COIN_CLI -version | awk '{print $5}' | awk -F '-' '{print $1}')${NC}
   echo -e " Protocol version: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==2'; exit")${NC}
   echo
   echo -e " ${CYAN}Wallet information${NC} "
-  echo  
+  echo
   echo -e " Connections   : "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getconnectioncount; exit")${NC} "( In : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  true; exit") / Out : $(su - $COIN_NAME -c "$COIN_CLI getpeerinfo|grep inbound|grep -c  false; exit") )"
   echo -e " Wallet    sync: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI mnsync status | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==1'; exit")${NC}
   echo -e " Wallet   block: "${YELLOW}$(su - $COIN_NAME -c "$COIN_CLI getinfo | grep -o ':.*,' | awk -F: '{print $2}' | tr -d ',: ' | awk 'NR==7'; exit")${NC}
@@ -1710,9 +1709,9 @@ wallet_info() {
           echo -e " Wallet  Status: ${GREEN}on chain${NC}"
           echo
           else
-          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"  
+          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"
           echo -e " ${RED}Check again in 5 minutes. If this status repeats"
-          echo -e " please select option [2] Wallet Management.${NC}" 
+          echo -e " please select option [2] Wallet Management.${NC}"
           echo
   fi
   echo
@@ -1754,7 +1753,7 @@ masternode_info() {
     echo -e "\t\t  ${YELLOW} Main Menu${NC}"
     echo -e "\t\t\t|- Coin selected"
     echo -e "\t\t\t|- Wallet and masternode stats"
-    echo -e "\t\t\t${YELLOW}|- Masternode statistics${NC}\n" 
+    echo -e "\t\t\t${YELLOW}|- Masternode statistics${NC}\n"
     allign  "$COIN_NAME" " " " Masternode statistics "
   }
   header
@@ -1888,7 +1887,7 @@ other_options() {
                echo -e " "The daemon as been stopped
                echo
                systemctl stop $COIN_NAME1.service > /dev/null 2>&1
-               sudo killall $COIN_DAEMON1 > /dev/null 2>&1 
+               sudo killall $COIN_DAEMON1 > /dev/null 2>&1
               fi
            done
            echo
@@ -1909,7 +1908,7 @@ other_options() {
                  break
                fi
              done
-           fi      
+           fi
         ;;
         4) clear
            header
@@ -1963,7 +1962,7 @@ other_options() {
            echo
            echo -e " "This option will restart the entire VPS
            echo -e " "where this script is runing. All the
-           echo -e " "services installed will be restarted 
+           echo -e " "services installed will be restarted
            echo
            echo -e " "Would you like to proceed?
            echo
@@ -1983,7 +1982,7 @@ other_options() {
                0) clear
                   other_options
                ;;
-               *) 
+               *)
                   echo -e "Please choose one of the options available "
                   echo
                ;;
@@ -2089,7 +2088,7 @@ update_script() {
     echo -e "           $ASCII_L        Update script        $ASCII_R"
     echo -e $ASCII_LINE
     echo
-    echo -e " "Script version Github"\t\t"${YELLOW}$(curl -s $SCRIPT_GITHUB | jq -r '.tag_name')${NC}
+    echo -e " "Script version Github"\t\t"${YELLOW}$(curl $GITHUB_AUTH -s $SCRIPT_GITHUB | jq -r '.tag_name')${NC}
     echo
     echo -e " "Script version Installed"\t"${YELLOW}$SCRIPVERSION${NC}
     echo
@@ -2129,7 +2128,7 @@ update_script() {
     echo -e "           $ASCII_L        Update script        $ASCII_R"
     echo -e $ASCII_LINE
     echo
-    echo -e " "Script version Github"\t\t"${YELLOW}$(curl -s $SCRIPT_GITHUB | jq -r '.tag_name')${NC}
+    echo -e " "Script version Github"\t\t"${YELLOW}$(curl $GITHUB_AUTH -s $SCRIPT_GITHUB | jq -r '.tag_name')${NC}
     echo
     echo -e " "Script version Installed"\t"${YELLOW}$SCRIPVERSION${NC}
     echo
@@ -2281,7 +2280,7 @@ function purge_old_installation() {
   echo
 }
 
-# Process to download wallet files from Github and alocate them in the system. 
+# Process to download wallet files from Github and alocate them in the system.
 function download_node() {
   echo -e " "Downloading files to install ${GREEN}$COIN_NAME${NC} Daemon
   cd $TMP_FOLDER >/dev/null 2>&1
@@ -2304,7 +2303,7 @@ function reload_service() {
   systemctl enable $COIN_NAME.service >/dev/null 2>&1
   sleep 5
 }
- 
+
 # Process to configure service multinode.
 function configure_systemd_multi() {
   cat << EOF > /etc/systemd/system/$COIN_NAME.service
@@ -2345,7 +2344,7 @@ function bootstrap() {
   echo -e " "Downloading ${GREEN}$COIN_NAME${NC} boostrap
   echo
   while true; do
-    curl -# -o bootstrap.zip -f "$BOOTSTRAP"
+    curl $GITHUB_AUTH -# -o bootstrap.zip -f "$BOOTSTRAP"
     if [ $? -eq 0 ]; then
       echo
       echo -e " "Download succeeded
@@ -2356,7 +2355,7 @@ function bootstrap() {
       echo
       sleep 5
       clear
-      echo 
+      echo
       echo -e " "Downloading ${GREEN}$COIN_NAME${NC} boostrap
       echo
     fi
@@ -2381,7 +2380,7 @@ function bootstrap() {
   cp -rf blocks/ chainstate/ $CONFIGFOLDER/
   cd ~
   chown $COIN_NAME:users -R $CONFIGFOLDER/
-  rm -rf $CONFIGFOLDER/bootstrap 
+  rm -rf $CONFIGFOLDER/bootstrap
   clear
 }
 
@@ -2446,7 +2445,7 @@ function get_ip() {
   for ips in $(netstat -i | awk '!/Kernel|Iface|lo/ {print $1," "}'); do
     NODE_IPS+=($(curl --retry 3 --interface $ips --connect-timeout 2 -s4 icanhazip.com))
   done
-  
+
   if [ ${#NODE_IPS[@]} -gt 1 ]; then
     echo -e "${GREEN}More than one IP. Please type 0 to use the first IP, 1 for the second and so on...${NC}"
     INDEX=0
@@ -2460,7 +2459,7 @@ function get_ip() {
   else
     NODEIP=${NODE_IPS[0]}
   fi
-  
+
   if [[ -z "$NODEIP" ]]; then
     #Couldn't determine IP, most likely icanhazip.com is timed out
     echo -e "${RED}Failed to determine IP address. Please wait a couple minutes and rerun script. If this continues, ask for assistance on Discord.${NC}"
@@ -2511,7 +2510,7 @@ function prepare_system() {
   fi
   clear
 }
- 
+
 # Process to update the wallet.
 function update_wallet_process() {
   echo
@@ -2568,7 +2567,7 @@ function overview_center() {
   echo -e " ${GREEN}Total disk space${NC}  $(df -h -t ext4 --total | awk '/total/ {print $2 " (" $5 " in use)"}')"
   echo -e " ${GREEN}Total RAM memory${NC} $total_mem (${percentage_used}% in use) - ${GREEN}Cache Mem${NC} $cache_mem"
   echo
-  echo -e " Overview of wallets installed"  
+  echo -e " Overview of wallets installed"
   echo
   for dir in $(find /home/users \( -name ".azzure" -or -name ".beacon" -or -name ".birake" -or -name ".cryptoflow" -or -name ".cryptosaga" -or -name ".dashdiamond" -or -name ".eskacoin" -or -name ".flits" -or -name ".jackpot" -or -name ".kyanite" -or -name ".mobic" -or -name ".monk" -or -name ".oneworld" -or -name ".peony" -or -name ".sapphire" -or -name ".suvereno" -or -name ".ultraclear" \) -type d 2>/dev/null)
   do
@@ -2580,16 +2579,16 @@ function overview_center() {
       WALLET_BLOCK_HASH1=$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1" 2>/dev/null)
       echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
       echo -e " Masternodes:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getactivemasternodecount | jq -r '\"total \(.total) | not_capable \(.not_capable) | started \(.started)\"'; exit" | tr -d '"')${NC}"
-      echo -e " Explorer block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}" 
+      echo -e " Explorer block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}"
       if [[ "$EXPLORER_HASH1" == "$WALLET_BLOCK_HASH1" ]]; then
           echo -e " Wallet   block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${WALLET_BLOCK_HASH1:0:12} ... ${WALLET_BLOCK_HASH1: -12}${NC}"
           echo -e " Wallet  Status: ${GREEN}on chain${NC}"" ""  Connections: ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
           echo
           else
           echo -e " Connections:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getconnectioncount; exit")${NC}  (In: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c true; exit") | Out: $(su - $COIN_NAME1 -c "$COIN_CLI1 getpeerinfo|grep inbound|grep -c false; exit"))"
-          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"  
+          echo -e " Wallet  Status: ${RED}Block hash doesn't match${NC}"
           echo -e " ${RED}Check again in 5 minutes. If this status repeats"
-          echo -e " please view wallet statistic of $COIN_NAME1 for more info.${NC}" 
+          echo -e " please view wallet statistic of $COIN_NAME1 for more info.${NC}"
           echo
       fi
     fi
@@ -2629,7 +2628,7 @@ function overview_center() {
 
 # Process for Prompting Information About a New Version of the Script.
 function version_script_check() {
-  LATEST_VERSION=$(curl -s $SCRIPT_GITHUB | grep -oP '(?<="tag_name": ")[^"]+')
+  LATEST_VERSION=$(curl $GITHUB_AUTH -s $SCRIPT_GITHUB | grep -oP '(?<="tag_name": ")[^"]+')
     if [ -z "$LATEST_VERSION" ]; then
     echo -e " --- "
     echo
@@ -2663,7 +2662,7 @@ function version_wallet_check() {
         if [ -e "$dir/activemasternode.conf" ]; then
             var_overview
             GITHUB1="https://api.github.com/repos/decenomy/$TICKER1/releases/latest"
-            LATEST_WALLET=$(curl -s "$GITHUB1" | jq -r '.tag_name')
+            LATEST_WALLET=$(curl $GITHUB_AUTH -s "$GITHUB1" | jq -r '.tag_name')
             if [ "$LATEST_WALLET" == "null" ]; then
                 null=true
             else
@@ -2678,7 +2677,7 @@ function version_wallet_check() {
             fi
         fi
     done
-    if [ "$null" = true ]; then    
+    if [ "$null" = true ]; then
         echo -e " - Unable to retrieve the latest ${GREEN}wallet version${NC} available on GitHub."
         echo -e "   There have been too many requests made from this machine."
         echo -e "   Please allow some time before trying again."
@@ -2790,6 +2789,21 @@ function system_script() {
   [ -x decenomy.sh ] || (echo " Script permissions have been updated to allow it to be executed as a file" && chmod +x decenomy.sh) && mv decenomy.sh decenomy
 }
 
+function github_auth() {
+    VARFILE="./github_token.sh"
+    if [[ -f "$VARFILE" ]]; then
+        source $VARFILE
+	GITHUB_AUTH="-u $GITHUB_TOKEN:x-oauth-basic"
+	echo
+	echo -e " Github auth token loaded..."
+	echo
+	sleep 2
+	clear
+    else
+        GITHUB_AUTH=""
+    fi
+}
+
 ##### Main #####
 clear
 echo
@@ -2805,6 +2819,7 @@ fi
 command -v nano >/dev/null 2>&1 || apt-get install nano -y >/dev/null 2>&1
 sleep 2
 clear
+github_auth
 echo
 echo -e " Checking if new wallets version available..."
 version_wallet_check >/dev/null 2>&1
