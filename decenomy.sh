@@ -19,7 +19,7 @@ NC='\033[0m'
 ASCII_L="--│█│█"
 ASCII_R="│█│█--"
 ASCII_LINE="--------------------------------------------------------------"
-SCRIPVERSION=v1.0.9
+SCRIPVERSION=v1.1.0
 SCRIPT_GITHUB=https://api.github.com/repos/decenomy/mnscript/releases/latest
 SCRIPT_FILE=`curl -s $SCRIPT_GITHUB | grep "browser_download_url.*decenomy.sh" | cut -d : -f 2,3 | tr -d \" | xargs`
 NODEIP=$(curl --fail --retry 3 -s4 icanhazip.com)
@@ -96,6 +96,18 @@ var_overview() {
   esac
 }
 
+blockchain_check() {
+  EXPLORER=https://$TICKER.flitswallet.app/api
+  EXPLORER_BLOCK=$(curl -s $EXPLORER/status | jq -r '.backend.blocks' | awk '{print $1-9}')
+  EXPLORER_HASH=$(curl -s $EXPLORER/v2/block-index/$EXPLORER_BLOCK | jq -r '.blockHash')
+  WALLET_BLOCK_HASH=$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK" 2>/dev/null)
+
+  EXPLORER1=https://$TICKER1.flitswallet.app/api
+  EXPLORER_BLOCK1=$(curl -s $EXPLORER1/status | jq -r '.backend.blocks' | awk '{print $1-9}')
+  EXPLORER_HASH1=$(curl -s $EXPLORER1/v2/block-index/$EXPLORER_BLOCK1 | jq -r '.blockHash')
+  WALLET_BLOCK_HASH1=$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1" 2>/dev/null)
+}
+
 var_azr() {
   TMP_FOLDER=$(mktemp -d)
   CONFIG_FILE='azzure.conf'
@@ -106,7 +118,6 @@ var_azr() {
   COIN_NAME='azzure'
   TICKER='AZR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14725
@@ -125,7 +136,6 @@ var_becn() {
   COIN_NAME='beacon'
   TICKER='BECN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36552
@@ -143,8 +153,7 @@ var_bir() {
   COIN_PATH='/usr/local/bin/'
   COIN_NAME='birake'
   TICKER='BIR'
-  GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks	
+  GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest	
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=39697
@@ -163,7 +172,6 @@ var_cfl() {
   COIN_NAME='cryptoflow'
   TICKER='CFL'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=13333
@@ -182,7 +190,6 @@ var_saga() {
   COIN_NAME='cryptosaga'
   TICKER='SAGA'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_NAME='cryptosaga'
@@ -202,7 +209,6 @@ var_dashd() {
   COIN_NAME='dashdiamond'
   TICKER='DASHD'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=12341
@@ -221,7 +227,6 @@ var_esk() {
   COIN_NAME='eskacoin'
   TICKER='ESK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=14215
@@ -240,7 +245,6 @@ var_fls() {
   COIN_NAME='flits'
   TICKER='FLS'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32972
@@ -259,7 +263,6 @@ var_777() {
   COIN_NAME='jackpot'
   TICKER='777'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=17771
@@ -278,7 +281,6 @@ var_kyan() {
   COIN_NAME='kyanite'
   TICKER='KYAN'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=7757
@@ -297,7 +299,6 @@ var_mobic() {
   COIN_NAME='mobic'
   TICKER='MOBIC'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=22487
@@ -316,7 +317,6 @@ var_monk() {
   COIN_NAME='monk'
   TICKER='MONK'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32270
@@ -335,7 +335,6 @@ var_owo() {
   COIN_NAME='oneworld'
   TICKER='OWO'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32112
@@ -354,7 +353,6 @@ var_pny() {
   COIN_NAME='peony'
   TICKER='PNY'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=36779
@@ -373,7 +371,6 @@ var_sapp() {
   COIN_NAME='sapphire'
   TICKER='SAPP'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=45328
@@ -392,7 +389,6 @@ var_suv() {
   COIN_NAME='suvereno'
   TICKER='SUV'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=18976
@@ -411,7 +407,6 @@ var_ucr() {
   COIN_NAME='ultraclear'
   TICKER='UCR'
   GITHUB=https://api.github.com/repos/decenomy/$TICKER/releases/latest
-  EXPLORER=https://explorer.decenomy.net/api/v2/$TICKER/blocks
   COIN_TGZ=`curl -s "$GITHUB" | grep -i "browser_download_url" | grep -E "Linux-x64\.zip|Linux\.zip" | cut -d : -f2-3 | tr -d \" | xargs`
   COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
   COIN_PORT=32628
@@ -1680,9 +1675,7 @@ stats_wallet_mn() {
 
 # Menu - Wallet statistics.
 wallet_info() {
-  EXPLORER_BLOCK=$(curl -s $EXPLORER | jq -r '.response[9].height')
-  EXPLORER_HASH=$(curl -s $EXPLORER | jq -r '.response[9].blockhash')
-  WALLET_BLOCK_HASH=$(su - $COIN_NAME -c "$COIN_CLI getblockhash $EXPLORER_BLOCK" 2>/dev/null)
+  blockchain_check
   header
   echo -e "\t\t  ${YELLOW} Main Menu${NC}"
   echo -e "\t\t\t|- Coin selected"
@@ -1774,8 +1767,8 @@ masternode_info() {
   echo
   echo -e " "[1] Reload information
   echo -e " "[2] Masternode status complete info
-  echo -e " "[3] Masternode on explorer
-  echo -e " "[4] Wallet management
+  # echo -e " "[3] Masternode on explorer
+  echo -e " "[3] Wallet management
   echo
   echo -e $ASCII_LINE
   echo -e "\t\t  [0]  Go back to previous menu"
@@ -1791,10 +1784,10 @@ masternode_info() {
       2) clear
          mn_status_comp_info
       ;;
+      #3) clear
+      #   mn_explorer
+      #;;
       3) clear
-         mn_explorer
-      ;;
-      4) clear
          wallet_management
       ;;
       0) clear
@@ -2574,10 +2567,7 @@ function overview_center() {
   do
     if [ -e "$dir/activemasternode.conf" ]; then
           var_overview
-      EXPLORER1=https://explorer.decenomy.net/api/v2/$TICKER1/blocks
-      EXPLORER_BLOCK1=$(curl -s $EXPLORER1 | jq -r '.response[9].height')
-      EXPLORER_HASH1=$(curl -s $EXPLORER1 | jq -r '.response[9].blockhash')
-      WALLET_BLOCK_HASH1=$(su - $COIN_NAME1 -c "$COIN_CLI1 getblockhash $EXPLORER_BLOCK1" 2>/dev/null)
+          blockchain_check
       echo -e " "${GREEN}$(basename $dir | cut -c 2-)${NC}
       echo -e " Masternodes:    ${YELLOW}$(su - $COIN_NAME1 -c "$COIN_CLI1 getactivemasternodecount | jq -r '\"total \(.total) | not_capable \(.not_capable) | started \(.started)\"'; exit" | tr -d '"')${NC}"
       echo -e " Explorer block: ${YELLOW}$EXPLORER_BLOCK1${NC}    hash: ${YELLOW}${EXPLORER_HASH1:0:12} ... ${EXPLORER_HASH1: -12}${NC}" 
